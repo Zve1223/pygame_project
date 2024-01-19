@@ -1,17 +1,22 @@
 from __future__ import annotations
-from object import Object
-from transform import Transform
+from my_library.transform import Transform
 
 
 class Component:
-    parent: Object
+    parent: ()
     transform: Transform
     components: list[Component, ...]
 
-    def __init__(self, parent: Object) -> None:
+    def __init__(self, parent) -> None:
         self.parent = parent
         self.transform = parent.transform
         self.components = parent.components
+
+    def __str__(self) -> str:
+        return self.__class__.__name__
+
+    def __repr__(self) -> str:
+        return self.__class__.__name__
 
     def awake(self) -> None:
         pass
@@ -22,5 +27,11 @@ class Component:
     def update(self) -> None:
         pass
 
+    def late_update(self) -> None:
+        pass
+
     def fixed_update(self) -> None:
+        pass
+
+    def delete(self) -> None:
         pass

@@ -1,11 +1,12 @@
 import pygame
-from constants import MAX_FPS
-from object import Object
-from hierarchy import Hierarchy
-from component import Component
-from constants import WIN_SIZE
+
+import my_library.constants
+from my_library.vector2 import Vector2
+from my_library.transform import Transform
+from my_library.component import Component
+from my_library.object import Object
+from my_library.hierarchy import Hierarchy
+from my_library.image_renderer import ImageRenderer
 
 
-screen = pygame.display.set_mode(WIN_SIZE)
-DT = 1.0 / MAX_FPS
-FDT = 1.0 / 30.0
+screen: pygame.Surface = pygame.display.set_mode(my_library.constants.WIN_SIZE)

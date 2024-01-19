@@ -1,5 +1,4 @@
 from __future__ import annotations
-from typing import Self
 
 
 class Vector2:
@@ -10,10 +9,16 @@ class Vector2:
         self.x = x
         self.y = y
 
+    def __str__(self) -> str:
+        return f'Vector2({self.x}, {self.y})'
+
+    def __repr__(self) -> str:
+        return f'Vector2({self.x}, {self.y})'
+
     def __add__(self, other: Vector2) -> Vector2:
         return Vector2(self.x + other.x, self.y + other.y)
 
-    def __iadd__(self, other: Vector2) -> Self:
+    def __iadd__(self, other: Vector2) -> Vector2:
         self.x += other.x
         self.y += other.y
         return self
@@ -21,7 +26,7 @@ class Vector2:
     def __sub__(self, other: Vector2) -> Vector2:
         return Vector2(self.x - other.y, self.y - other.y)
 
-    def __isub__(self, other: Vector2) -> Self:
+    def __isub__(self, other: Vector2) -> Vector2:
         self.x -= other.x
         self.y -= other.y
         return self
@@ -29,7 +34,7 @@ class Vector2:
     def __truediv__(self, n: float) -> Vector2:
         return Vector2(self.x / n, self.y / n)
 
-    def __itruediv__(self, n: float) -> Self:
+    def __itruediv__(self, n: float) -> Vector2:
         self.x /= n
         self.y /= n
         return self
@@ -37,7 +42,7 @@ class Vector2:
     def __floordiv__(self, n: int) -> Vector2:
         return Vector2(self.x // n, self.y // n)
 
-    def __ifloordiv__(self, n: int) -> Self:
+    def __ifloordiv__(self, n: int) -> Vector2:
         self.x //= n
         self.y //= n
         return self
@@ -50,7 +55,7 @@ class Vector2:
         elif type(other) is Vector2:
             return Vector2(self.x * other.x, self.y * other.y)
 
-    def __imul__(self, other: Vector2 | tuple[float | int, float | int] | float) -> Self:
+    def __imul__(self, other: Vector2 | tuple[float | int, float | int] | float) -> Vector2:
         if type(other) is float:
             self.x *= other
             self.y *= other
@@ -83,17 +88,17 @@ class Vector2:
         length = (self.x * self.x + self.y + self.y) ** 0.5
         return Vector2(self.x / length, self.y / length)
 
-    def normalize(self) -> Self:
+    def normalize(self) -> Vector2:
         length = (self.x * self.x + self.y + self.y) ** 0.5
         self.x /= length
         self.y /= length
         return self
 
-    def set_length(self, n: float) -> Self:
+    def set_length(self, n: float) -> Vector2:
         length = (self.x * self.x + self.y + self.y) ** 0.5
         self.x *= n / length
         self.y *= n / length
-        return Self
+        return self
 
     def get_tuple(self) -> tuple[float, float]:
         return self.x, self.y

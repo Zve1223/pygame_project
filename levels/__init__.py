@@ -1,13 +1,12 @@
-from levels.level0 import level_0_loop
-from levels.level1 import level_1_loop
-from levels.level2 import level_2_loop
-from levels.level3 import level_3_loop
+from my_library.level import Level
+import levels.level0
+import levels.level1
+import levels.level2
+import levels.level3
 
 
-class Level:
-    def __init__(self, level_loop: ()) -> None:
-        self.start = level_loop
+levels: tuple[Level, ...] = (
+    Level('Menu', levels.level0.declare_variables),
+)
 
-
-levels = (Level(level_0_loop), Level(level_1_loop), Level(level_2_loop), Level(level_3_loop))
-current_level = 0
+current_level = levels[0]

@@ -1,6 +1,6 @@
 import pygame
 from pygame import Surface
-from constants import *
+from my_library.constants import *
 
 
 def level_2_loop(screen: Surface) -> LevelId:

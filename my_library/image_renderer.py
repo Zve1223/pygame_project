@@ -1,9 +1,9 @@
 from pygame import Surface, Rect
-from my_library import screen
-from object import Object
-from component import Component
-from vector2 import Vector2
-from constants import Alignment, LEFT_TOP, GLOBAL
+import my_library
+from my_library.object import Object
+from my_library.component import Component
+from my_library.vector2 import Vector2
+from my_library.constants import Alignment, LEFT_TOP, GLOBAL
 
 
 class ImageRenderer(Component):
@@ -11,14 +11,11 @@ class ImageRenderer(Component):
     image_size: Vector2 | None
     alignment: Alignment
 
-    def __init__(self, parent: Object, image: Surface | None = None, alignment: Alignment = LEFT_TOP) -> None:
+    def __init__(self, parent: Object) -> None:
         super(ImageRenderer, self).__init__(parent)
-        self.image = image
-        if self.image is not None:
-            self.image_size = Vector2(*self.image.get_size())
-        else:
-            self.image_size = None
-        self.alignment: Alignment = alignment
+        self.image = None
+        self.image_size = None
+        self.alignment: Alignment = LEFT_TOP
 
     def set_image(self, image: Surface) -> None:
         self.image = image
@@ -34,4 +31,5 @@ class ImageRenderer(Component):
         return Rect(position.x, position.y, size.x, size.y)
 
     def update(self) -> None:
-        screen.blit(self.image, self.rect)
+        if self.image is not None and self.image_size is not None:
+            my_library.screen.blit(self.image, self.rect)

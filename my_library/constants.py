@@ -1,6 +1,7 @@
 import pygame.cursors
 from pygame import Color
 from math import pi as PI
+from typing import NewType
 
 # Settings
 
@@ -70,5 +71,5 @@ MouseButton = LEFT_BUTTON | RIGHT_BUTTON | MIDDLE_BUTTON | WHEEL_UP_BUTTON | WHE
 
 LOCAL = 0
 GLOBAL = 1
-Space = LOCAL | GLOBAL
+Space = NewType('Space', LOCAL | GLOBAL)
 

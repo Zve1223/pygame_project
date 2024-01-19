@@ -1,14 +1,15 @@
 from __future__ import annotations
-from object import Object
-from vector2 import Vector2
-from constants import Space, LOCAL, GLOBAL
+
+import my_library
+from my_library.vector2 import Vector2
+from my_library.constants import Space, LOCAL, GLOBAL
 
 
 class Transform:
     position: Vector2 = Vector2()
     angle: float = 0.0
     scale: Vector2 = Vector2(1.0, 1.0)
-    object: Object | None = None
+    object: my_library.Object | None = None
 
     def __init__(self, position: Vector2 = Vector2(0.0, 0.0),
                  angle: float = 0.0,
@@ -16,6 +17,12 @@ class Transform:
         self.position = position
         self.angle = angle
         self.scale = scale
+
+    def __str__(self) -> str:
+        return f'Transform({self.position}, {self.angle}, {self.scale})'
+
+    def __repr__(self) -> str:
+        return f'Transform({self.position}, {self.angle}, {self.scale})'
 
     def translate(self, x: float, y: float, space: Space = LOCAL) -> None:
         if space == LOCAL and self.object is not None:
