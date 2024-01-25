@@ -1,58 +1,68 @@
 from __future__ import annotations
 
-from my_library.time import Time
-from my_library.object import Object
+from .time import *
+from .game_object import GameObject
 
 
 class Hierarchy:
     name: str
-    objects: list[Object, ...]
+    game_objects: list[GameObject, ...]
 
-    def __init__(self, name: str) -> None:
-        self.name = name
-        self.objects = []
+    def __init__(self) -> None:
+        self.name = 'Hierarchy'
+        self.game_objects = []
 
     def __str__(self) -> str:
-        objects = "\n\t".join(map(str, self.objects))
+        objects = "\n\t".join(map(str, self.game_objects))
         return f'{self.name}(\n\t{objects}\n)'
 
     def __repr__(self) -> str:
-        objects = "\n\t".join(map(str, self.objects))
+        objects = "\n\t".join(map(str, self.game_objects))
         return f'{self.name}(\n\t{objects}\n)'
 
-    def add_object(self, object: Object) -> Hierarchy:
-        self.objects.append(object)
+    def add_object(self, object: GameObject) -> Hierarchy:
+        self.game_objects.append(object)
         return self
 
-    def delete_object(self, required: Object) -> None:
-        for object in self.objects:
-            if object is required:
-                object.delete()
+    def find_object(self, name: str) -> GameObject | None:
+        for game_object in self.game_objects:
+            if game_object.name == name:
+                return game_object
+        for game_object in self.game_objects:
+            found = game_object.find(name)
+            if found is not None:
+                return found
+        return None
+
+    def delete_object(self, name: str) -> None:
+        for game_object in self.game_objects:
+            if game_object.name == name:
+                game_object.delete()
                 return
-        for object in self.objects:
-            found = object.find(required)
+        for game_object in self.game_objects:
+            found = game_object.find(name)
             if found is not None:
                 found.delete()
                 return
 
     def clear(self) -> None:
-        for object in self.objects:
-            object.delete()
+        for game_object in self.game_objects:
+            game_object.delete()
 
     def start(self) -> None:
-        for object in self.objects:
-            object.start()
+        for game_object in self.game_objects:
+            game_object.start()
 
     def update(self) -> None:
-        for object in self.objects:
-            object.update()
+        for game_object in self.game_objects:
+            game_object.update()
 
     def late_update(self) -> None:
-        for object in self.objects:
-            object.late_update()
+        for game_object in self.game_objects:
+            game_object.late_update()
 
     def fixed_update(self) -> None:
         for _ in range(int(Time.fixed_update_timer / Time.fixed_delta_time)):
-            for object in self.objects:
-                object.fixed_update()
+            for game_object in self.game_objects:
+                game_object.fixed_update()
         Time.fixed_update_timer %= Time.fixed_delta_time

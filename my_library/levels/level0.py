@@ -1,9 +1,13 @@
 from my_library import *
+from my_library.scripts import *
 
 
 def declare_variables() -> None:
-    background = Object('Background')
-    background.add_component(ImageRenderer)
+    ball = GameObject('Ball')
+    ball.add_component(ImageRenderer)
+    renderer = ball.get_component(ImageRenderer)
+    renderer.set_image(load_image('./textures/ball.png'))
+    ball.add_component(BallController)
     # self.background.resize(max(WIN_SIZE), max(WIN_SIZE))
     # self.background.set_alignment(MIDDLE_CENTER)
     # self.background.move(WIN_SIZE[0] / 2, WIN_SIZE[1] / 2)

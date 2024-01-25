@@ -1,22 +1,27 @@
 from __future__ import annotations
-import levels
-import my_library
-from my_library.component import Component
-from my_library.transform import Transform
+from typing import TypeVar, Type
+
+from .component import Component
+from .components.transform import Transform
+from .hierarchy import Hierarchy
+from . import hierarchy
 
 
-class Object:
+_T = TypeVar('_T', bound=Component)
+
+
+class GameObject:
     name: str
     transform: Transform
-    components: list[Component]
-    parent: Object | my_library.Hierarchy
-    children: list[Object]
+    components: list[Transform, Component, ...]
+    parent: GameObject | Hierarchy
+    children: list[GameObject, ...]
 
     def __init__(self, name: str = 'GameObject') -> None:
         self.name: str = name
-        self.transform = Transform()
-        self.components = []
-        self.parent = levels.current_level.hierarchy.add_object(self)
+        self.transform = Transform(self)
+        self.components = [self.transform]
+        self.parent = hierarchy.add_object(self)
         self.children = []
 
         self.awake()
@@ -59,27 +64,48 @@ class Object:
         for child in self.children:
             child.late_update()
 
-    def add_component(self, component_type: type) -> None:
-        if any(type(component) is component_type for component in self.components):
-            print(f'Error! There is already {component_type} in components of {self.name}')
-            return
+    def add_component(self, component_type: Type[_T]) -> _T:
+        for component in self.components:
+            if type(component) is component_type:
+                print(f'Error! There is already {component_type} in components of {self.name}')
+                return component
+
         component = component_type(self)
         self.components.append(component)
+
         component.awake()
         component.start()
 
-    def get_component(self, component_type: type) -> Component | None:
+        return component
+
+    def get_component(self, component_type: Type[_T]) -> _T | None:
         for component in self.components:
             if type(component) is component_type:
                 return component
         return None
 
-    def find(self, object: Object) -> Object | None:
+    def remove_component(self, component_type: Type[_T]) -> None:
+        if component_type is Transform:
+            print('Nope. You can\'t remove Transform component')
+            return
+        for component in self.components:
+            if type(component) is component_type:
+                self.components.remove(component)
+                component.delete()
+                return
+        print(f'Error! There is no {component_type} in components of {self.name}')
+        return None
+
+    @classmethod
+    def find_object(cls, name) -> GameObject | None:
+        return hierarchy.find_object(name)
+
+    def find(self, name: str) -> GameObject | None:
         for child in self.children:
-            if child is object:
+            if child.name == name:
                 return child
         for child in self.children:
-            found = child.find(object)
+            found = child.find(name)
             if found is not None:
                 return found
         return None

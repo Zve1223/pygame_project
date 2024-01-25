@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from time import time as now
 
 
 @dataclass

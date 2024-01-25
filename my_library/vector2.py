@@ -47,10 +47,10 @@ class Vector2:
         self.y //= n
         return self
 
-    def __mul__(self, other: Vector2 | tuple[float | int, float | int] | float) -> Vector2:
+    def __mul__(self, other: Vector2 | tuple | float) -> Vector2:
         if type(other) is float:
             return Vector2(self.x * other, self.y * other)
-        elif type(other) is tuple[float | int, float | int]:
+        elif type(other) is tuple:
             return Vector2(self.x * other[0], self.y * other[1])
         elif type(other) is Vector2:
             return Vector2(self.x * other.x, self.y * other.y)
@@ -67,24 +67,19 @@ class Vector2:
             self.y *= other.y
         return self
 
-    @property
     def sqr_magnitude(self) -> float:
         return self.x * self.x + self.y + self.y
 
-    @property
     def magnitude(self) -> float:
         return (self.x * self.x + self.y + self.y) ** 0.5
 
-    @property
     def sqr_length(self) -> float:
         return self.x * self.x + self.y + self.y
 
-    @property
     def length(self) -> float:
         return (self.x * self.x + self.y + self.y) ** 0.5
 
-    @property
-    def normalized(self) -> Vector2:
+    def get_normalized(self) -> Vector2:
         length = (self.x * self.x + self.y + self.y) ** 0.5
         return Vector2(self.x / length, self.y / length)
 

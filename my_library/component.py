@@ -1,16 +1,16 @@
 from __future__ import annotations
-from my_library.transform import Transform
+
+from .game_object import GameObject
 
 
 class Component:
-    parent: ()
-    transform: Transform
+    game_object: GameObject
+    transform: GameObject.transform
     components: list[Component, ...]
 
-    def __init__(self, parent) -> None:
-        self.parent = parent
-        self.transform = parent.transform
-        self.components = parent.components
+    def __init__(self, game_object: GameObject) -> None:
+        self.game_object = game_object
+        self.components = game_object.components
 
     def __str__(self) -> str:
         return self.__class__.__name__
